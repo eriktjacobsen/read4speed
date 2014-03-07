@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Speed Reader</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/speed.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container" style="margin-top:150px">
+        <div class="col-md-4 col-md-offset-3">
+            <div class="row">
+                <div class="prevBox">
+                    <span class="prevWord"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="wordBox">
+                    <span class="word"><span class="pre">We</span><span class="focus" style="color:red">l</span><span class="post">come</span></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="nextBox">
+                    <span class="nextWord"><span class="nextPre"></span><span class="nextFocus"></span><span class="nextPost"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="row control-top">
+                <button type="button" id="restart" class="btn btn-default"><span class="glyphicon glyphicon-fast-backward"></span></button>
+                <button type="button" id="stepback" class="btn btn-default"><span class="glyphicon glyphicon-step-backward"></span></button>
+                <button type="button" id="toggle" class="btn btn-default"><span class="glyphicon glyphicon-play"></span></button>
+                <button type="button" id="stepforward" class="btn btn-default"><span class="glyphicon glyphicon-step-forward"></span></button>
+                <button type="button" id="rewind" class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span></button>
+            </div>
+            <div class="row control-bottom form-inline">
+                <button type="button" id="previews" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span></button>
+                <button type="button" id="zoom" class="btn btn-default"><span class="glyphicon glyphicon-zoom-in"></span></button>
+                <div class="context" style="display:none">
+                </div>
+                <select id="speed" class="form-control">
+                    <option>250</option>
+                    <option>300</option>
+                    <option>400</option>
+                    <option>500</option>
+                    <option>600</option>
+                    <option>700</option>
+                    <option>800</option>
+                    <option>900</option>
+                    <option>1000</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="newText">
+                    <span class="input-group-btn">
+                        <button id="loadText" class="btn btn-default" type="button">Load</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+        </div>
+    </div>
+
+    <div id="fullText" class="hide">
+        Something to read
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    function offset_word (word)
+    {
+        if (typeof word != "string" || word == "")
+        {
+            return false;
+        }
+        // Figure out breaking point
+        var split = 0;
+        if (word.length == 1)
+        {
+            split = 1;
+        } else if (word.length < 6)
+        {
+            if (word[1].match(/[^a-zA-Z]/) && word.length == 2)
+            {
+                split = 1;
+            }else
+            {
+                split = 2;
+            }
+        } else if (word.length < 10)
+        {
+            split = 3;
+        } else if (word.length < 14)
+        {
+            split = 4;
+        }
+
+        /* Set boxes equal to value */
+
+        $(".pre").text(word.substring(0,split-1));
+        $(".focus").text(word.substring(split-1,split));
+        $(".post").text(word.substring(split));
+
+
+        /* Now Calculate Pixel Position */
+        var start = 70;
+        var pre   = $(".pre").width();
+        var focus = $(".focus").width();
+
+        //console.log("pre: " + pre);
+        //console.log("focus: " + focus);
+
+        focus = focus / 2;
+        focus = focus.toFixed();
+
+        var offset = (start - pre - focus);
+        //console.log("offset: " + offset);
+
+        $(".word").css("left",offset);
+    }
+
+    function offset_peek (word)
+    {
+        if (typeof word != "string" || word == "")
+        {
+            return false;
+        }
+        // Figure out breaking point
+        var split = 0;
+        if (word.length == 1)
+        {
+            split = 1;
+        } else if (word.length < 6)
+        {
+            if (word[1].match(/[^a-zA-Z]/) && word.length == 2)
+            {
+                split = 1;
+            }else
+            {
+                split = 2;
+            }
+        } else if (word.length < 10)
+        {
+            split = 3;
+        } else if (word.length < 14)
+        {
+            split = 4;
+        }
+
+        /* Set boxes equal to value */
+
+        $(".nextPre").text(word.substring(0,split-1));
+        $(".nextFocus").text(word.substring(split-1,split));
+        $(".nextPost").text(word.substring(split));
+
+
+        /* Now Calculate Pixel Position */
+        var start = 70;
+        var pre   = $(".nextPre").width();
+        var focus = $(".nextFocus").width();
+
+        //console.log("pre: " + pre);
+        //console.log("focus: " + focus);
+
+        focus = focus / 2;
+        focus = focus.toFixed();
+
+        var offset = (start - pre - focus);
+        //console.log("offset: " + offset);
+
+        $(".nextWord").css("left",offset);
+    }
+
+    function breakup_text( raw_text )
+    {
+        var raw_words = raw_text.split(/[\s]+/);
+
+        var words = [];
+
+        for (var i=0;i<raw_words.length;i++)
+        {
+            var line = raw_words[i].replace(/^\s+|\s+$/g, '');
+            if (line == "" || line == "\t")
+            {
+                continue;
+            } else if (line.length < 14)
+            {
+                words.push(line);
+            } else
+            {
+                var start;
+                var remain;
+
+                if (line.match(/-/))
+                {
+                    var splitpoint = line.indexOf("-") + 1;
+
+                    words.push(line.substring(0,splitpoint));
+                    start  = splitpoint;
+                    remain = line.length - splitpoint;
+                }
+                else
+                {
+                    words.push(line.substring(0,6)+"-");
+                    start  = 6;
+                    remain = line.length - 6;
+                }
+
+                while (remain > 8)
+                {
+                    if (line.substring(start,start+8).match(/-/))
+                    {
+                        var splitpoint = line.indexOf("-") + 1;
+
+                        words.push(line.substring(start,start + splitpoint));
+                        start  += splitpoint;
+                        remain -= splitpoint;
+                    }else
+                    {
+                        words.push(line.substring(start,start + 4) + "-");
+                        start += 4;
+                        remain -= 4;
+                    }
+                }
+                words.push(line.substring(start));
+            }
+        }
+        //console.debug(words);
+        return words;
+    }
+
+    function increment_word ()
+    {
+        //console.log("idx: "+idx);
+        //console.log("words.length: "+words.length);
+        if (idx > -1 && idx < words.length - 1)
+        {
+            var prev_offset = $(".word").css("left");
+            idx++;
+            offset_word(words[idx]);
+
+            $(".prevWord").text(words[idx-1]);
+            $(".prevWord").css("left",prev_offset);
+            if (idx < words.length - 1)
+            {
+                offset_peek(words[idx+1]);
+            }else
+            {
+                /* This means last word, so reset */
+                $(".nextPre").text("");
+                $(".nextFocus").text("");
+                $(".nextPost").text("");
+                if (play == true)
+                {
+                    window.clearInterval(timer);
+                    play = false;
+                    $("#toggle span").removeClass("glyphicon-pause");
+                    $("#toggle span").addClass("glyphicon-play");
+                }
+            }
+        }else if (idx == -1)
+        {
+            $(".prevWord").text("");
+            idx++;
+            offset_word(words[idx]);
+            offset_peek(words[idx+1]);
+        }
+    }
+
+    var idx = 0;
+    var words = breakup_text($("#fullText").text());
+    var play = false;
+
+    $(window).load(function() {
+        offset_word(words[0]);
+    });
+
+    var timer;
+    $("#toggle").click(function(){
+
+        if (play == false)
+        {
+            var timing = 60 / $("#speed").val() * 1000;
+            //console.log("timing: "+timing);
+            timer = window.setInterval(function(){increment_word();},timing);
+            //console.debug(timer);
+            play = true;
+            $("#toggle span").removeClass("glyphicon-play");
+            $("#toggle span").addClass("glyphicon-pause");
+        }else
+        {
+            window.clearInterval(timer);
+            play = false;
+            $("#toggle span").removeClass("glyphicon-pause");
+            $("#toggle span").addClass("glyphicon-play");
+        }
+    });
+
+    $("#rewind").click(function (){
+        if (idx > 14)
+        {
+            idx -= 15;
+        }else
+        {
+            idx = -1;
+        }
+
+        increment_word();
+    });
+
+    $("#restart").click(function (){
+        idx = -1;
+        increment_word();
+    });
+    $("#speed").change(function (){
+        if (play == true)
+        {
+            var timing = 60 / $("#speed").val() * 1000;
+            window.clearInterval(timer);
+            timer = window.setInterval(function(){increment_word();},timing);
+        }
+    });
+
+    $("#loadText").click(function(){
+        if (play == true)
+        {
+            window.clearInterval(timer);
+            play = false;
+            $("#toggle span").removeClass("glyphicon-pause");
+            $("#toggle span").addClass("glyphicon-play");
+        }
+        words = breakup_text($("#newText").val());
+        idx = -1;
+        increment_word();
+        $("#newText").val("");
+    });
+
+    $("#stepback").click(function(){
+        if (idx > 0)
+        {
+            idx -= 2;
+        }
+        increment_word();
+    });
+
+    $("#stepforward").click(function(){
+        increment_word();
+    });
+
+    $("#previews").click(function(){
+        if ($("#previews span").hasClass("glyphicon-eye-close"))
+        {
+            $("#previews span").removeClass("glyphicon-eye-close");
+            $("#previews span").addClass("glyphicon-eye-open");
+
+            $(".prevWord").show();
+            $(".nextWord").show();
+        }else
+        {
+            $("#previews span").removeClass("glyphicon-eye-open");
+            $("#previews span").addClass("glyphicon-eye-close");
+
+            $(".prevWord").hide();
+            $(".nextWord").hide();
+        }
+    });
+
+    $("#zoom").hover(function(){
+
+        if (play == true)
+        {
+            window.clearInterval(timer);
+        }
+
+        var preview_size = 40;
+        var before_words = preview_size;
+        var after_words  = preview_size;
+
+        if (before_words > idx)
+        {
+            before_words = idx;
+        }
+        if (!(after_words + idx < words.length))
+        {
+            after_words = words.length - 1;
+        }
+
+        var pre_words  = words.slice(idx-before_words, idx).join(" ");
+        var post_words = words.slice(idx+1, idx+1+after_words).join(" ");
+        $(".context").html(pre_words + "<span style='font-size:16px;color:red;font-weight:bolder'> " + words[idx] + " </span>" + post_words);
+        $(".context").show();
+    },function(){
+        if (play == true)
+        {
+            var timing = 60 / $("#speed").val() * 1000;
+            timer = window.setInterval(function(){increment_word();},timing);
+        }
+        $(".context").fadeOut()
+    });
+
+});
+</script>
+  </body>
+</html>
