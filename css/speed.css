@@ -3,6 +3,12 @@ font-family: 'Yanone Kaffeesatz', sans-serif;
 font-size:3em
 }
 
+.reader {
+border:2px solid black;
+border-radius:10px;
+padding: 10px 27px;
+}
+
 .wordBox {
 width: 210px;
 height: 52px;
@@ -52,11 +58,42 @@ border: 1px solid black;
 border-radius: 5px;
 z-index: 500;
 position: absolute;
-top:95px;
-left:89px;
-padding:30px;
+top:102px;
+left:100px;
+padding:20px;
 background: #FFF;
 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 font-size: 14px;
 line-height: 1.42857143;
 }
+
+#slider {
+height:183px;
+float:right;
+}
+
+.ui-slider-vertical {
+border: 1px solid black;
+}
+
+.ui-slider-vertical .ui-slider-handle {
+border: 1px solid black;
+border-radius: 2px;
+background-color: darkgray;
+}
+
+.contextContent {
+text-align: justify;
+width: 530px;
+float:left;
+overflow:hidden;
+height: 195px;
+padding-top:65px;
+}
+
+.contextFocus {
+font-size:18px;
+color:red;
+font-weight:bolder;
+}
+
