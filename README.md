@@ -3,7 +3,7 @@ read4speed
 
 Speed Reader implemented in: jQuery / Bootstrap3 
 
-![Example Screenshot](http://i.imgur.com/ocmcsBq.png)
+![Example Screenshot](http://i.imgur.com/3XYbLIo.png)
 
 This is first version done in one day, 
 still need to implement custom timings and wrapping it into a bookmarklet / chrome add-on
