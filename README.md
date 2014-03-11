@@ -3,6 +3,9 @@ read4speed
 
 Speed Reader implemented in: jQuery / Bootstrap3 
 
+(Live Demo Version Here:](http://eriktjacobsen.github.io/read4speed/speed.html)
+
+
 ![Example Screenshot](http://i.imgur.com/3XYbLIo.png)
 
 This is first version done in one day, 
