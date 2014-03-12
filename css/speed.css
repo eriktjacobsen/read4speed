@@ -86,9 +86,10 @@ background-color: darkgray;
 text-align: justify;
 width: 530px;
 float:left;
-overflow:hidden;
+overflow: hidden;
 height: 195px;
-padding-top:65px;
+padding-top:75px;
+padding-bottom:75px;
 }
 
 .contextFocus {

@@ -86,6 +86,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="js/jquery.hotkeys.min.js"></script>
 <script>
 $(document).ready(function() {
 
@@ -287,6 +288,7 @@ $(document).ready(function() {
     }
 
     var idx = 0;
+
     var words = breakup_text($("#fullText").text());
     var play = false;
 
@@ -308,7 +310,9 @@ $(document).ready(function() {
             $("#toggle span").addClass("glyphicon-pause");
         }else
         {
+            console.log("Trying to Clear Timer");
             window.clearInterval(timer);
+            console.debug(timer);
             play = false;
             $("#toggle span").removeClass("glyphicon-pause");
             $("#toggle span").addClass("glyphicon-play");
@@ -384,6 +388,34 @@ $(document).ready(function() {
         }
     });
 
+    function scrollContext()
+    {
+        console.log("Scroll ["+$(".contextContent").scrollTop()+"] Position ["+$(".contextFocus").position().top+"]");
+
+        var scroll   = $(".contextContent").scrollTop();
+        var position = $(".contextFocus").position().top;
+        var lineheight = parseInt($('.contextContent').css('line-height'),10);
+
+        /* Now, fine tune it */
+
+        var i = 0
+        while (($(".contextFocus").position().top > 95 ||
+                $(".contextFocus").position().top < 75) && i++ < 5)
+        {
+            var scroll = $(".contextContent").scrollTop();
+
+
+            if ($(".contextFocus").position().top > 95)
+            {
+                $(".contextContent").scrollTop(scroll + lineheight);
+            }else if ($(".contextFocus").position().top < 75)
+            {
+                $(".contextContent").scrollTop(scroll - lineheight);
+            }
+
+        }
+    }
+
     function setContext(word_idx)
     {
         var pre_words  = words.slice(0, word_idx).join(" ");
@@ -392,17 +424,7 @@ $(document).ready(function() {
         $(".contextPre").text(pre_words);
         $(".contextPost").text(post_words);
         $(".contextFocus").text(words[word_idx]);
-
-        var lineheight = parseInt($('.contextContent').css('line-height'),10);
-        var scroll     = $(".contextContent").scrollTop();
-
-        if ($(".contextFocus").position().top > 86)
-        {
-            $(".contextContent").scrollTop(scroll + lineheight);
-        }else if ($(".contextFocus").position().top < 86)
-        {
-            $(".contextContent").scrollTop(scroll - lineheight);
-        }
+        scrollContext();
     }
 
     $("#zoom").hover(function(){
@@ -413,7 +435,15 @@ $(document).ready(function() {
         }
         setContext(idx);
 
+
+        var percent    = 1 - (idx / words.length);
+        var new_slider = Math.round(percent * 100);
+
+        $("#slider").slider( "option", "value", new_slider );
+
         $(".context").show();
+        $(".contextContent").scrollTop($(".contextFocus").position().top - 85);
+        scrollContext();
     },function(){
         if (play == true)
         {
@@ -424,16 +454,17 @@ $(document).ready(function() {
     });
 
     $(".context").hover(function(){
+        if (play == true)
+        {
+            window.clearInterval(timer);
+            play = false;
+            $("#toggle span").removeClass("glyphicon-pause");
+            $("#toggle span").addClass("glyphicon-play");
+        }
         $(".context").stop();
         $(".context").show(0);
 
     },function(){
-
-        var percent = $("#slider").slider("value") / 100;
-        idx = Math.round(words.length * percent) - 1;
-
-        //increment_word();
-
         $(".context").fadeOut()
     });
 
@@ -454,6 +485,42 @@ $(document).ready(function() {
         orientation: "vertical",
         value: 100
     });
+
+    $(document).bind('keyup', 'space', function(){
+        if (play == false)
+        {
+            var timing = 60 / $("#speed").val() * 1000;
+            timer = window.setInterval(function(){increment_word();},timing);
+            play = true;
+            $("#toggle span").removeClass("glyphicon-play");
+            $("#toggle span").addClass("glyphicon-pause");
+        }else
+        {
+            window.clearInterval(timer);
+            play = false;
+            $("#toggle span").removeClass("glyphicon-pause");
+            $("#toggle span").addClass("glyphicon-play");
+        }
+    });
+
+    $(document).bind('keydown', 'down', function(){
+        increment_word();
+    });
+
+    $(document).bind('keydown', 'right', function(){
+        increment_word();
+    });
+
+    $(document).bind('keydown', 'up', function(){
+        idx -= 2;
+        increment_word();
+    });
+
+    $(document).bind('keydown', 'left', function(){
+        idx -= 2;
+        increment_word();
+    });
+
 
 });
 </script>
