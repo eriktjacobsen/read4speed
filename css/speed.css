@@ -7,6 +7,9 @@ font-size:3em
 border:2px solid black;
 border-radius:10px;
 padding: 10px 27px;
+width: 281px;
+height: 288px;
+z-index:1500;
 }
 
 .wordBox {
@@ -70,13 +73,10 @@ line-height: 1.42857143;
 #slider {
 height:183px;
 float:right;
-}
-
-.ui-slider-vertical {
 border: 1px solid black;
 }
 
-.ui-slider-vertical .ui-slider-handle {
+#slider .ui-slider-handle {
 border: 1px solid black;
 border-radius: 2px;
 background-color: darkgray;
