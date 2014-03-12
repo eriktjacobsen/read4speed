@@ -310,7 +310,7 @@ $(document).ready(function() {
             $("#toggle span").addClass("glyphicon-pause");
         }else
         {
-            console.log("Trying to Clear Timer");
+            //console.log("Trying to Clear Timer");
             window.clearInterval(timer);
             console.debug(timer);
             play = false;
@@ -390,7 +390,7 @@ $(document).ready(function() {
 
     function scrollContext()
     {
-        console.log("Scroll ["+$(".contextContent").scrollTop()+"] Position ["+$(".contextFocus").position().top+"]");
+        //console.log("Scroll ["+$(".contextContent").scrollTop()+"] Position ["+$(".contextFocus").position().top+"]");
 
         var scroll   = $(".contextContent").scrollTop();
         var position = $(".contextFocus").position().top;
