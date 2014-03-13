@@ -1,8 +1,3 @@
-body {
-font-family: 'Yanone Kaffeesatz', sans-serif;
-font-size:3em
-}
-
 .reader {
 border:2px solid black;
 border-radius:10px;
@@ -10,6 +5,10 @@ padding: 10px 27px;
 width: 281px;
 height: 288px;
 z-index:1500;
+font-family: 'Yanone Kaffeesatz', sans-serif;
+font-size:2em;
+background-color:white;
+text-align:left;
 }
 
 .wordBox {
@@ -98,3 +97,6 @@ color:red;
 font-weight:bolder;
 }
 
+.hide {
+display: none !important;
+}
