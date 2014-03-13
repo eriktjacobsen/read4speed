@@ -43,12 +43,11 @@ javascript:(function(e,a,g,h,f,c,b,d){
     */
     $.getScript( "http://eriktjacobsen.github.io/read4speed/js/combined.js",function(){
         $("<div>", {
-            id: "read4speed",
-            style: "height:288px;width:281px;z-index:1500;position:fixed;left:400px;top:400px;"
-        }).prependTo("body");
-        $("#read4speed").draggable();
+            style: "height:288px;width:281px;z-index:1500;position:fixed;left:400px;top:25px;"
+        }).addClass("read4speed").prependTo("body");
+        $(".read4speed").draggable();
 
-        $("#read4speed").load("http://eriktjacobsen.github.io/read4speed/module.html",function(){
+        $(".read4speed").load("http://eriktjacobsen.github.io/read4speed/module.html",function(){
             read4speed_init();
         });
 
