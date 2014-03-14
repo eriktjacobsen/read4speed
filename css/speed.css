@@ -1,17 +1,22 @@
-.reader {
+.read4speed .reader {
 border:2px solid black;
 border-radius:10px;
 padding: 10px 27px;
-width: 281px;
+width: 285px;
 height: 288px;
 z-index:1500;
 font-family: 'Yanone Kaffeesatz', sans-serif;
 font-size:2em;
 background-color:white;
 text-align:left;
+font-kerning: auto;
+font-size: 32px;
+font-style: normal;
+font-variant: normal;
+font-weight: normal;
 }
 
-.wordBox {
+.read4speed .wordBox {
 width: 210px;
 height: 52px;
 background-image: url(../speed.png);
@@ -19,21 +24,21 @@ background-repeat: no-repeat;
 padding-top: 5px;
 }
 
-.word {
+.read4speed .word {
 position: relative;
 }
 
-#speed {
+.read4speed #speed {
 width: 70px;
 }
 
-.control-top {
+.read4speed .control-top {
 }
-.control-bottom {
+.read4speed .control-bottom {
 margin-bottom:20px;
 }
 
-.prevBox, .nextBox {
+.read4speed .prevBox, .read4speed .nextBox {
 //border: 1px solid black;
 height: 35px;
 width: 210px;
@@ -41,19 +46,19 @@ margin-top: 2px;
 margin-bottom: 2px;
 }
 
-.prevWord, .nextWord {
+.read4speed .prevWord, .read4speed .nextWord {
 position: relative;
 color: #999;
 }
 
-.prevWord {
+.read4speed .prevWord {
 top:-3px;
 }
-.nextWord {
+.read4speed .nextWord {
 top:-7px;
 }
 
-.context {
+.read4speed .context {
 height: 225px;
 width: 600px;
 border: 1px solid black;
@@ -69,19 +74,19 @@ font-size: 14px;
 line-height: 1.42857143;
 }
 
-#slider {
+.read4speed #slider {
 height:183px;
 float:right;
 border: 1px solid black;
 }
 
-#slider .ui-slider-handle {
+.read4speed #slider .ui-slider-handle {
 border: 1px solid black;
 border-radius: 2px;
 background-color: darkgray;
 }
 
-.contextContent {
+.read4speed .contextContent {
 text-align: justify;
 width: 530px;
 float:left;
@@ -91,12 +96,12 @@ padding-top:75px;
 padding-bottom:75px;
 }
 
-.contextFocus {
+.read4speed .contextFocus {
 font-size:18px;
 color:red;
 font-weight:bolder;
 }
 
-.hide {
+.read4speed .hide {
 display: none !important;
 }
